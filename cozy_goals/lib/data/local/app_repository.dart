@@ -113,7 +113,7 @@ class AppRepository {
 
     final initialItems = <Reward>[
       const Reward(id: 'hair_bun_mint', type: 'hair', label: 'Mint bun'),
-      const Reward(id: 'clothes_cardigan_lavender', type: 'clothes', label: 'Lavender cardigan'),
+      const Reward(id: 'clothes_lavender', type: 'clothes', label: 'Lavender'),
     ];
     for (final item in initialItems) {
       await db.insert('inventory', item.toMap(isUnlocked: true));
@@ -186,7 +186,7 @@ class AppRepository {
       freezeCount: 0,
       lastValidatedDate: DayKey.today(),
       avatarHair: 'hair_bun_mint',
-      avatarClothes: 'clothes_cardigan_lavender',
+      avatarClothes: 'clothes_lavender',
       avatarSkin: 'skin_peach',
     );
     await saveState(initial);

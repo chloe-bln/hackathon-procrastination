@@ -21,8 +21,8 @@ HAIR_REWARDS = [
     {"id": "hair_bun_green", "type": "hair", "label": "Green bun"},
     {"id": "hair_bun_brown", "type": "hair", "label": "Brown bun"},
     {"id": "hair_bun_blonde", "type": "hair", "label": "Blonde bun"},
-    {"id": "hair_bun_white", "type": "hair", "label": "White"},
-    {"id": "hair_bun_black", "type": "hair", "label": "Black"},
+    {"id": "hair_bun_white", "type": "hair", "label": "White bun"},
+    {"id": "hair_bun_black", "type": "hair", "label": "Black bun"},
 ]
 
 CLOTHES_REWARDS = [

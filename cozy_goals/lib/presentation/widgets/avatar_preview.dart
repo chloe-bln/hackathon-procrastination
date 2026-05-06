@@ -107,7 +107,7 @@ class AvatarPreview extends StatelessWidget {
               ),
             ),
           ),
-          if (hair == 'hair_bun_mint')
+          if (hair.contains('bun'))
             Positioned(
               top: size * 0.09,
               child: Container(

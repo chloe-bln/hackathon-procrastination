@@ -10,7 +10,7 @@ class CozyAppState {
     required this.lastValidatedDate,
     this.lastStreakAwardedDate,
     this.avatarHair = 'hair_bun_mint',
-    this.avatarClothes = 'clothes_cardigan_lavender',
+    this.avatarClothes = 'clothes_lavender',
     this.avatarSkin = 'skin_peach',
     this.dayOffsetDays = 0,
   });
@@ -78,7 +78,7 @@ class CozyAppState {
         lastValidatedDate: map['lastValidatedDate'] as String,
         lastStreakAwardedDate: map['lastStreakAwardedDate'] as String?,
         avatarHair: map['avatarHair'] as String? ?? 'hair_bun_mint',
-        avatarClothes: map['avatarClothes'] as String? ?? 'clothes_cardigan_lavender',
+        avatarClothes: map['avatarClothes'] as String? ?? 'clothes_lavender',
         avatarSkin: map['avatarSkin'] as String? ?? 'skin_peach',
         dayOffsetDays: (map['dayOffsetDays'] as int?) ?? 0,
       );
