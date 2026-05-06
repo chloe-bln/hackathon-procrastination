@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class DayKey {
   static final DateFormat _fmt = DateFormat('yyyy-MM-dd');
 
-  static String today() => _fmt.format(DateTime.now());
+  static String today({int offsetDays = 0}) => _fmt.format(DateTime.now().add(Duration(days: offsetDays)));
 
   static String fromDate(DateTime date) => _fmt.format(date);
 

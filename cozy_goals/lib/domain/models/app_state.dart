@@ -1,3 +1,5 @@
+const Object _unset = Object();
+
 class CozyAppState {
   const CozyAppState({
     required this.currentStreak,
@@ -9,6 +11,7 @@ class CozyAppState {
     this.lastStreakAwardedDate,
     this.avatarHair = 'hair_bun_mint',
     this.avatarClothes = 'clothes_cardigan_lavender',
+    this.dayOffsetDays = 0,
   });
 
   final int currentStreak;
@@ -20,6 +23,7 @@ class CozyAppState {
   final String? lastStreakAwardedDate;
   final String avatarHair;
   final String avatarClothes;
+  final int dayOffsetDays;
 
   CozyAppState copyWith({
     int? currentStreak,
@@ -28,9 +32,10 @@ class CozyAppState {
     int? level,
     int? freezeCount,
     String? lastValidatedDate,
-    String? lastStreakAwardedDate,
+    Object? lastStreakAwardedDate = _unset,
     String? avatarHair,
     String? avatarClothes,
+    int? dayOffsetDays,
   }) =>
       CozyAppState(
         currentStreak: currentStreak ?? this.currentStreak,
@@ -39,9 +44,10 @@ class CozyAppState {
         level: level ?? this.level,
         freezeCount: freezeCount ?? this.freezeCount,
         lastValidatedDate: lastValidatedDate ?? this.lastValidatedDate,
-        lastStreakAwardedDate: lastStreakAwardedDate ?? this.lastStreakAwardedDate,
+        lastStreakAwardedDate: identical(lastStreakAwardedDate, _unset) ? this.lastStreakAwardedDate : lastStreakAwardedDate as String?,
         avatarHair: avatarHair ?? this.avatarHair,
         avatarClothes: avatarClothes ?? this.avatarClothes,
+        dayOffsetDays: dayOffsetDays ?? this.dayOffsetDays,
       );
 
   Map<String, Object?> toMap() => {
@@ -55,6 +61,7 @@ class CozyAppState {
         'lastStreakAwardedDate': lastStreakAwardedDate,
         'avatarHair': avatarHair,
         'avatarClothes': avatarClothes,
+        'dayOffsetDays': dayOffsetDays,
       };
 
   factory CozyAppState.fromMap(Map<String, Object?> map) => CozyAppState(
@@ -67,5 +74,6 @@ class CozyAppState {
         lastStreakAwardedDate: map['lastStreakAwardedDate'] as String?,
         avatarHair: map['avatarHair'] as String? ?? 'hair_bun_mint',
         avatarClothes: map['avatarClothes'] as String? ?? 'clothes_cardigan_lavender',
+        dayOffsetDays: (map['dayOffsetDays'] as int?) ?? 0,
       );
 }

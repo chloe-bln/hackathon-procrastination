@@ -24,7 +24,7 @@ data/
 backend/
   progression.py  XP and level progression
   streak.py       streak validation and freeze logic
-  rewards.py      cosmetic and item unlocks
+  rewards.py      level-up rewards and post-minimum goal rewards
   daily_reset.py  past-day validation
   cli.py          JSON stdin/stdout bridge
 ```
@@ -40,9 +40,17 @@ Flutter owns UI and persistence. Python owns deterministic game rules.
 
 This avoids a local HTTP server, open ports, background daemons and network dependencies.
 
+## Goal timer and rewards
+
+Each goal stores `durationMinutes`. The user starts a Flutter timer screen; the validate action appears halfway through the selected duration and the timer continues until validation. Completion triggers Python XP progression. From the third completed goal onward, Flutter also calls the Python `goal_reward` command.
+
 ## Daily reset
 
 There is no permanent daemon. On app startup, the Riverpod controller checks whether `lastValidatedDate` is older than today. It validates each missing day using Python. This is robust enough for an offline desktop app and avoids platform-specific midnight services.
+
+## Developer Mode
+
+Developer Mode is a Flutter-only testing screen protected by a password in Settings. It can grant rewards, add XP, increase level and simulate time by modifying `app_state.dayOffsetDays`. This keeps the test clock local to the app and avoids changing the Linux system clock.
 
 ## Streak behavior
 

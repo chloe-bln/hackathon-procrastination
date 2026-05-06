@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""CLI bridge used by Flutter Process.run.
-
-Usage:
-    echo '{"current_xp":0,"current_level":1,"xp_gain":25}' | python3 backend/cli.py progression
-"""
+"""CLI bridge used by Flutter."""
 from __future__ import annotations
 
 import json
@@ -12,6 +8,7 @@ from typing import Any, Dict
 
 from daily_reset import run as daily_reset_run
 from progression import apply_xp
+from rewards import all_rewards, reward_for_goal_completion
 from streak import secure_streak
 
 
@@ -39,6 +36,16 @@ def main() -> int:
             current_level=int(payload.get("current_level", 1)),
             xp_gain=int(payload.get("xp_gain", 25)),
         )
+    elif command == "goal_reward":
+        result = {
+            "reward": reward_for_goal_completion(
+                completed_count=int(payload.get("completed_count", 0)),
+                minimum_goals=int(payload.get("minimum_goals", 3)),
+                unlocked_ids=payload.get("unlocked_ids", []),
+            )
+        }
+    elif command == "all_rewards":
+        result = {"rewards": all_rewards()}
     elif command == "secure_streak":
         result = secure_streak(
             date=str(payload["date"]),
@@ -61,6 +68,6 @@ def main() -> int:
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
-    except Exception as exc:  # deliberate: errors are surfaced to Flutter stderr
+    except Exception as exc:
         print(json.dumps({"error": str(exc)}), file=sys.stderr)
         raise SystemExit(1)

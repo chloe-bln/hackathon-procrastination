@@ -33,7 +33,10 @@ lastValidatedDate TEXT yyyy-MM-dd
 lastStreakAwardedDate TEXT yyyy-MM-dd nullable
 avatarHair TEXT
 avatarClothes TEXT
+dayOffsetDays INTEGER DEFAULT 0
 ```
+
+`dayOffsetDays` is used only by Developer Mode. It simulates time locally without touching the Linux system clock.
 
 ### goals
 
@@ -42,9 +45,12 @@ id TEXT PRIMARY KEY
 title TEXT
 description TEXT nullable
 goalDate TEXT yyyy-MM-dd
+durationMinutes INTEGER DEFAULT 25
 isCompleted INTEGER 0/1
 completedAt TEXT ISO-8601 nullable
 ```
+
+A goal is completed only after the focus timer has been launched and the user validates it. The validate button appears halfway through `durationMinutes`.
 
 ### inventory
 
@@ -55,6 +61,8 @@ label TEXT
 isUnlocked INTEGER 0/1
 ```
 
+Cosmetics are stored in `inventory`. Streak freeze items are consumables and are stored as `freezeCount` in `app_state`.
+
 ### blocked_apps
 
 ```text
@@ -63,6 +71,15 @@ name TEXT
 command TEXT
 unlockedUntil TEXT ISO-8601 nullable
 ```
+
+## Migration
+
+Database version 2 adds:
+
+- `goals.durationMinutes`
+- `app_state.dayOffsetDays`
+
+Existing v1 save files are migrated automatically with default values.
 
 ## JSON save-file equivalent
 

@@ -4,6 +4,7 @@ class Goal {
     required this.title,
     required this.goalDate,
     this.description,
+    this.durationMinutes = 25,
     this.isCompleted = false,
     this.completedAt,
   });
@@ -12,12 +13,14 @@ class Goal {
   final String title;
   final String? description;
   final String goalDate;
+  final int durationMinutes;
   final bool isCompleted;
   final DateTime? completedAt;
 
   Goal copyWith({
     String? title,
     String? description,
+    int? durationMinutes,
     bool? isCompleted,
     DateTime? completedAt,
   }) =>
@@ -26,6 +29,7 @@ class Goal {
         title: title ?? this.title,
         description: description ?? this.description,
         goalDate: goalDate,
+        durationMinutes: durationMinutes ?? this.durationMinutes,
         isCompleted: isCompleted ?? this.isCompleted,
         completedAt: completedAt,
       );
@@ -35,6 +39,7 @@ class Goal {
         'title': title,
         'description': description,
         'goalDate': goalDate,
+        'durationMinutes': durationMinutes,
         'isCompleted': isCompleted ? 1 : 0,
         'completedAt': completedAt?.toIso8601String(),
       };
@@ -44,6 +49,7 @@ class Goal {
         title: map['title'] as String,
         description: map['description'] as String?,
         goalDate: map['goalDate'] as String,
+        durationMinutes: (map['durationMinutes'] as int?) ?? 25,
         isCompleted: (map['isCompleted'] as int) == 1,
         completedAt: map['completedAt'] == null ? null : DateTime.parse(map['completedAt'] as String),
       );

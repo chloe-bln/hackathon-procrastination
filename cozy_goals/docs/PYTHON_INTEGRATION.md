@@ -6,15 +6,15 @@
 
 ## Command pattern
 
-Flutter:
+Flutter uses `Process.start()` rather than `Process.run()` because the app writes a JSON payload to the Python process through `stdin`.
 
 ```dart
-final result = await Process.run(
-  'python3',
-  ['backend/cli.py', 'progression'],
-  stdin: jsonEncode({'current_xp': 0, 'current_level': 1, 'xp_gain': 25}),
-);
-final json = jsonDecode(result.stdout as String);
+final process = await Process.start('python3', ['backend/cli.py', 'progression']);
+process.stdin.write(jsonEncode({'current_xp': 0, 'current_level': 1, 'xp_gain': 25}));
+await process.stdin.close();
+
+final stdoutText = await utf8.decoder.bind(process.stdout).join();
+final result = jsonDecode(stdoutText) as Map<String, dynamic>;
 ```
 
 Shell equivalent:
@@ -27,13 +27,19 @@ echo '{"current_xp":0,"current_level":1,"xp_gain":25}' | python3 backend/cli.py 
 
 ### progression
 
+Applies XP, calculates level progression and returns level-up rewards.
+
+### goal_reward
+
+Called after a goal is completed. Once the daily minimum is reached, each validated goal grants one reward.
+
 Input:
 
 ```json
 {
-  "current_xp": 375,
-  "current_level": 1,
-  "xp_gain": 25
+  "completed_count": 3,
+  "minimum_goals": 3,
+  "unlocked_ids": ["hair_bun_mint", "clothes_cardigan_lavender"]
 }
 ```
 
@@ -41,15 +47,11 @@ Output:
 
 ```json
 {
-  "xp": 400,
-  "level": 2,
-  "level_up": true,
-  "rewards": [
-    {"id": "hair_bob_rose", "type": "hair", "label": "Rose bob"}
-  ],
-  "next_level_threshold": 900
+  "reward": {"id": "hair_leaf_sage", "type": "hair", "label": "Sage leaf hair"}
 }
 ```
+
+If all cosmetics are already unlocked, the command returns a consumable `streak_freeze`.
 
 ### secure_streak
 
@@ -58,6 +60,10 @@ Used when today's completed goal count reaches the daily minimum.
 ### daily_reset
 
 Used on startup to validate past days.
+
+### all_rewards
+
+Returns the reward catalog. The current Developer Mode uses a mirrored Dart catalog for simple synchronous UI rendering.
 
 ## App blocking
 

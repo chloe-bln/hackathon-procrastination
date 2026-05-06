@@ -6,7 +6,7 @@ Typical Ubuntu/Debian packages:
 
 ```bash
 sudo apt update
-sudo apt install -y curl git unzip xz-utils zip clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev python3 python3-pip sqlite3
+sudo apt install -y curl git unzip xz-utils zip clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev python3 python3-pip sqlite3 lld llvm binutils libstdc++-12-dev
 ```
 
 ## 2. Install Flutter

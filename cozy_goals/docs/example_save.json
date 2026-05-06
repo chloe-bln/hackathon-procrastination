@@ -12,7 +12,8 @@
     "lastValidatedDate": "2026-05-06",
     "lastStreakAwardedDate": "2026-05-06",
     "avatarHair": "hair_bob_rose",
-    "avatarClothes": "clothes_cardigan_lavender"
+    "avatarClothes": "clothes_cardigan_lavender",
+    "dayOffsetDays": 0
   },
   "goals": [
     {
@@ -20,6 +21,7 @@
       "title": "Write project outline",
       "description": "Small draft only",
       "goalDate": "2026-05-06",
+      "durationMinutes": 25,
       "isCompleted": true,
       "completedAt": "2026-05-06T09:30:00.000"
     }

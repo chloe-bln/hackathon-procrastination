@@ -63,6 +63,7 @@ class PythonEngine {
       if (File(candidate).existsSync()) return candidate;
     }
 
+    // Development fallback. This gives a readable error if the project is run from an unexpected directory.
     return p.join(Directory.current.path, 'backend', 'cli.py');
   }
 }

@@ -10,6 +10,7 @@ import '../widgets/flower_decoration.dart';
 import '../widgets/pastel_card.dart';
 import 'avatar_screen.dart';
 import 'blocking_screen.dart';
+import 'focus_timer_screen.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -61,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _Header(profileName: profile.username),
+                    _Header(profileName: profile.username, activeDay: app.activeDay, dayOffsetDays: s.dayOffsetDays),
                     const SizedBox(height: 20),
                     LayoutBuilder(
                       builder: (context, constraints) {
@@ -85,6 +86,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               Text('Today’s goals', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
                             ],
                           ),
+                          const SizedBox(height: 8),
+                          const Text('Start the timer. The validate button appears halfway through the selected duration.'),
                           const SizedBox(height: 16),
                           if (app.goals.isEmpty)
                             const _EmptyGoals()
@@ -120,40 +123,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _showAddGoalDialog(BuildContext context) async {
     final title = TextEditingController();
     final description = TextEditingController();
+    var durationMinutes = 25;
+
     await showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Plant a small goal 🌱'),
-        content: SizedBox(
-          width: 420,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(controller: title, autofocus: true, decoration: const InputDecoration(labelText: 'Title')),
-              const SizedBox(height: 12),
-              TextField(controller: description, maxLines: 3, decoration: const InputDecoration(labelText: 'Optional description')),
-            ],
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Plant a small goal 🌱'),
+          content: SizedBox(
+            width: 420,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(controller: title, autofocus: true, decoration: const InputDecoration(labelText: 'Title')),
+                const SizedBox(height: 12),
+                TextField(controller: description, maxLines: 3, decoration: const InputDecoration(labelText: 'Optional description')),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<int>(
+                  value: durationMinutes,
+                  decoration: const InputDecoration(labelText: 'Focus duration'),
+                  items: const [1, 5, 10, 15, 25, 30, 45, 60, 90]
+                      .map((minutes) => DropdownMenuItem<int>(value: minutes, child: Text('$minutes minutes')))
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) setDialogState(() => durationMinutes = value);
+                  },
+                ),
+              ],
+            ),
           ),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+            FilledButton(
+              onPressed: () async {
+                await ref.read(appControllerProvider.notifier).addGoal(
+                      title: title.text,
+                      description: description.text,
+                      durationMinutes: durationMinutes,
+                    );
+                if (context.mounted) Navigator.of(context).pop();
+              },
+              child: const Text('Add'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
-          FilledButton(
-            onPressed: () async {
-              await ref.read(appControllerProvider.notifier).addGoal(title: title.text, description: description.text);
-              if (context.mounted) Navigator.of(context).pop();
-            },
-            child: const Text('Add'),
-          ),
-        ],
       ),
     );
   }
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.profileName});
+  const _Header({required this.profileName, required this.activeDay, required this.dayOffsetDays});
 
   final String profileName;
+  final String activeDay;
+  final int dayOffsetDays;
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +187,13 @@ class _Header extends StatelessWidget {
         Text('Hello, $profileName 🌤', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w900)),
         const SizedBox(height: 6),
         Text('Three focused steps are enough to protect today.', style: Theme.of(context).textTheme.bodyLarge),
+        if (dayOffsetDays != 0) ...[
+          const SizedBox(height: 8),
+          Chip(
+            avatar: const Icon(Icons.science_rounded, size: 18),
+            label: Text('Developer date: $activeDay'),
+          ),
+        ],
       ],
     );
   }
@@ -242,23 +273,58 @@ class _GoalTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final completed = goal.isCompleted;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 240),
       margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: goal.isCompleted ? CozyColors.mint.withOpacity(0.45) : Colors.white.withOpacity(0.7),
+        color: completed ? CozyColors.mint.withOpacity(0.45) : Colors.white.withOpacity(0.7),
         borderRadius: BorderRadius.circular(24),
       ),
-      child: CheckboxListTile(
-        value: goal.isCompleted,
-        onChanged: (_) => ref.read(appControllerProvider.notifier).toggleGoal(goal),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text(goal.title, style: TextStyle(fontWeight: FontWeight.w800, decoration: goal.isCompleted ? TextDecoration.lineThrough : null)),
-        subtitle: goal.description == null ? null : Text(goal.description!),
-        secondary: IconButton(
-          icon: const Icon(Icons.delete_outline_rounded),
-          onPressed: () => ref.read(appControllerProvider.notifier).deleteGoal(goal.id),
-        ),
+      child: Row(
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 240),
+            child: completed
+                ? const Icon(Icons.check_circle_rounded, key: ValueKey('done'), color: CozyColors.sage, size: 32)
+                : const Icon(Icons.timer_rounded, key: ValueKey('timer'), color: CozyColors.roseText, size: 32),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  goal.title,
+                  style: TextStyle(fontWeight: FontWeight.w800, decoration: completed ? TextDecoration.lineThrough : null),
+                ),
+                const SizedBox(height: 3),
+                Text('${goal.durationMinutes} min focus session', style: Theme.of(context).textTheme.bodySmall),
+                if (goal.description != null) ...[
+                  const SizedBox(height: 4),
+                  Text(goal.description!),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          if (completed)
+            TextButton(
+              onPressed: () => ref.read(appControllerProvider.notifier).reopenGoal(goal),
+              child: const Text('Reopen'),
+            )
+          else
+            FilledButton.icon(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => FocusTimerScreen(goal: goal))),
+              icon: const Icon(Icons.play_arrow_rounded),
+              label: const Text('Start'),
+            ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline_rounded),
+            onPressed: () => ref.read(appControllerProvider.notifier).deleteGoal(goal.id),
+          ),
+        ],
       ),
     );
   }
@@ -276,7 +342,7 @@ class _EmptyGoals extends StatelessWidget {
         children: [
           Icon(Icons.spa_rounded, color: CozyColors.sage),
           SizedBox(width: 12),
-          Expanded(child: Text('No goals yet. Add three small, realistic goals to secure the day.')),
+          Expanded(child: Text('No goals yet. Add three small, realistic goals with a focus duration.')),
         ],
       ),
     );

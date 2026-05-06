@@ -39,7 +39,7 @@ class AppRepository {
       'goals',
       where: 'goalDate = ?',
       whereArgs: [day],
-      orderBy: 'isCompleted ASC, title COLLATE NOCASE ASC',
+      orderBy: 'isCompleted ASC, completedAt ASC, title COLLATE NOCASE ASC',
     );
     return rows.map(Goal.fromMap).toList();
   }
@@ -87,6 +87,12 @@ class AppRepository {
     final db = await _db;
     final rows = await db.query('inventory', where: 'isUnlocked = 1', orderBy: 'type, label');
     return rows.map(Reward.fromMap).toList();
+  }
+
+  Future<List<String>> unlockedRewardIds() async {
+    final db = await _db;
+    final rows = await db.query('inventory', columns: ['id'], where: 'isUnlocked = 1');
+    return rows.map((row) => row['id'] as String).toList();
   }
 
   Future<List<BlockedApp>> blockedApps() async {
