@@ -9,6 +9,8 @@ class CozyColors {
   static const cocoa = Color(0xFF6B4F4F);
   static const beige = Color(0xFFF4E1C1);
   static const roseText = Color(0xFF805B62);
+  static const black = Color.fromARGB(255, 29, 20, 22);
+  static const white = Color.fromARGB(255, 255, 255, 255);
 }
 
 class AppTheme {

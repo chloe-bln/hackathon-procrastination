@@ -8,15 +8,31 @@ import random
 from typing import Dict, Iterable, List, Optional
 
 HAIR_REWARDS = [
-    {"id": "hair_bob_rose", "type": "hair", "label": "Rose bob"},
-    {"id": "hair_waves_lavender", "type": "hair", "label": "Lavender waves"},
-    {"id": "hair_leaf_sage", "type": "hair", "label": "Sage leaf hair"},
+    {"id": "hair_pink", "type": "hair", "label": "Pink"},
+    {"id": "hair_lavender", "type": "hair", "label": "Lavender"},
+    {"id": "hair_green", "type": "hair", "label": "Green"},
+    {"id": "hair_mint", "type": "hair", "label": "Mint"},
+    {"id": "hair_brown", "type": "hair", "label": "Brown"},
+    {"id": "hair_blonde", "type": "hair", "label": "Blonde"},
+    {"id": "hair_white", "type": "hair", "label": "White"},
+    {"id": "hair_black", "type": "hair", "label": "Black"},
+    {"id": "hair_bun_pink", "type": "hair", "label": "Pink bun"},
+    {"id": "hair_bun_lavender", "type": "hair", "label": "Lavender bun"},
+    {"id": "hair_bun_green", "type": "hair", "label": "Green bun"},
+    {"id": "hair_bun_brown", "type": "hair", "label": "Brown bun"},
+    {"id": "hair_bun_blonde", "type": "hair", "label": "Blonde bun"},
+    {"id": "hair_bun_white", "type": "hair", "label": "White"},
+    {"id": "hair_bun_black", "type": "hair", "label": "Black"},
 ]
 
 CLOTHES_REWARDS = [
-    {"id": "clothes_sweater_mint", "type": "clothes", "label": "Mint sweater"},
-    {"id": "clothes_raincoat_blush", "type": "clothes", "label": "Blush raincoat"},
-    {"id": "clothes_overalls_sage", "type": "clothes", "label": "Sage overalls"},
+    {"id": "clothes_pink", "type": "clothes", "label": "Pink"},
+    {"id": "clothes_green", "type": "clothes", "label": "Green"},
+    {"id": "clothes_mint", "type": "clothes", "label": "Mint"},
+    {"id": "clothes_brown", "type": "clothes", "label": "Brown"},
+    {"id": "clothes_yellow", "type": "clothes", "label": "Yellow"},
+    {"id": "clothes_white", "type": "clothes", "label": "White"},
+    {"id": "clothes_black", "type": "clothes", "label": "Black"},
 ]
 
 FREEZE_REWARD = {"id": "streak_freeze", "type": "freeze", "label": "Streak freeze"}

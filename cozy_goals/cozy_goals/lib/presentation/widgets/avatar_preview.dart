@@ -19,15 +19,31 @@ class AvatarPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hairColor = switch (hair) {
-      'hair_bob_rose' => CozyColors.blush,
-      'hair_waves_lavender' => CozyColors.lavender,
-      'hair_leaf_sage' => CozyColors.sage,
+      'hair_pink' => CozyColors.blush,
+      'hair_bun_pink' => CozyColors.blush,
+      'hair_lavender' => CozyColors.lavender,
+      'hair_bun_lavender' => CozyColors.lavender,
+      'hair_green' => CozyColors.sage,
+      'hair_bun_green' => CozyColors.sage,
+      'hair_mint' => CozyColors.mint,
+      'hair_brown' => CozyColors.cocoa,
+      'hair_bun_brown' => CozyColors.cocoa,
+      'hair_blonde' => CozyColors.beige,
+      'hair_bun_blonde' => CozyColors.beige,
+      'hair_white' => CozyColors.white,
+      'hair_bun_white' => CozyColors.white,
+      'hair_black' => CozyColors.black,
+      'hair_bun_black' => CozyColors.black,
       _ => CozyColors.mint,
     };
     final clothesColor = switch (clothes) {
-      'clothes_sweater_mint' => CozyColors.mint,
-      'clothes_raincoat_blush' => CozyColors.blush,
-      'clothes_overalls_sage' => CozyColors.sage,
+      'clothes_pink' => CozyColors.blush,
+      'clothes_green' => CozyColors.sage,
+      'clothes_mint' => CozyColors.mint,
+      'clothes_brown' => CozyColors.cocoa,
+      'clothes_yellow' => CozyColors.beige,
+      'clothes_white' => CozyColors.white,
+      'clothes_black' => CozyColors.black,
       _ => CozyColors.lavender,
     };
     final skinColor = switch (skin) {
@@ -115,13 +131,13 @@ class _FacePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = CozyColors.cocoa
+      ..color = CozyColors.black
       ..style = PaintingStyle.fill;
     canvas.drawCircle(Offset(size.width * 0.36, size.height * 0.48), 3, paint);
     canvas.drawCircle(Offset(size.width * 0.64, size.height * 0.48), 3, paint);
 
     final smilePaint = Paint()
-      ..color = CozyColors.roseText
+      ..color = CozyColors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
