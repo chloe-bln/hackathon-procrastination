@@ -1,0 +1,34 @@
+{
+  "profile": {
+    "username": "Milo",
+    "birthDate": "1998-04-12T00:00:00.000"
+  },
+  "appState": {
+    "currentStreak": 5,
+    "longestStreak": 9,
+    "xp": 450,
+    "level": 2,
+    "freezeCount": 1,
+    "lastValidatedDate": "2026-05-06",
+    "lastStreakAwardedDate": "2026-05-06",
+    "avatarHair": "hair_bob_rose",
+    "avatarClothes": "clothes_cardigan_lavender"
+  },
+  "goals": [
+    {
+      "id": "uuid-1",
+      "title": "Write project outline",
+      "description": "Small draft only",
+      "goalDate": "2026-05-06",
+      "isCompleted": true,
+      "completedAt": "2026-05-06T09:30:00.000"
+    }
+  ],
+  "inventory": [
+    {"id": "hair_bun_mint", "type": "hair", "label": "Mint bun", "isUnlocked": true},
+    {"id": "clothes_cardigan_lavender", "type": "clothes", "label": "Lavender cardigan", "isUnlocked": true}
+  ],
+  "blockedApps": [
+    {"id": "uuid-2", "name": "Firefox", "command": "firefox", "unlockedUntil": null}
+  ]
+}
